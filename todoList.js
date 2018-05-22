@@ -8,10 +8,13 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 var app = express();
 
+var taches = [];
+
 app.use(express.static(__dirname + '/views'))
 .use(cookieSession({
     secret: 'todoSecret'}
 ))
+.use(bodyParser.json())
 .get('/', function(req, res) {
     res.render('accueil.ejs');
 })
@@ -19,7 +22,8 @@ app.use(express.static(__dirname + '/views'))
     res.render('todoListPage.ejs');
 })
 .post('/todolist/ajouter', function(req, res) {
-
+    taches.push(req.body.task);
+    console.log(taches[0]);
 })
 .use(function(req, res, next) {
     res.setHeader('Content-Type', 'text/plain');
