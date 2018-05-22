@@ -4,14 +4,16 @@ var url = require('url');
 var querystring = require('querystring');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 var app = express();
 
-app.use(express.static(__dirname + '/views'));
-
-app.get('/', function(req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send("On va essayer de faire une ToDo list dans cet exercice");
+app.use(express.static(__dirname + '/views'))
+.use(cookieSession({
+    secret: 'todoSecret'}
+))
+.get('/', function(req, res) {
+    res.render('accueil.ejs');
 })
 .get('/todolist', function(req, res) {
     res.render('todoListPage.ejs');
