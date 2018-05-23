@@ -29,6 +29,7 @@ app.use(express.static(__dirname + '/views'))
 .post('/todolist/ajouter', function(req, res) {
     taches.push(req.body.task.toString());
     console.log(taches);
+    res.render('todoPage.ejs', {taches: taches})
 })
 
 .use(function(req, res, next) {
