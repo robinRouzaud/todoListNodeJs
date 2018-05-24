@@ -23,13 +23,20 @@ app.use(express.static(__dirname + '/views'))
 })
 
 .get('/todolist', function(req, res) {
-    res.render('todoListPage.ejs');
+    res.render('todoPage.ejs', {taches: taches});
 })
 
 .post('/todolist/ajouter', function(req, res) {
     taches.push(req.body.task.toString());
     console.log(taches);
-    res.render('todoPage.ejs', {taches: taches})
+    res.render('todoPage.ejs', {taches: taches});
+})
+
+.get('/todolist/supprimer', function(req, res) {
+    var idTaskToDelete = querystring.parse(url.parse(req.url).query);
+    var deletedTask = taches[idTaskToDelete['id']];
+    taches.splice(idTaskToDelete['id'], 1);
+    res.render('todoPage.ejs', {taches: taches});
 })
 
 .use(function(req, res, next) {

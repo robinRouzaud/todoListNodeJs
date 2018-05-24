@@ -11,12 +11,13 @@
 
         <h2>Notre fameuse ToDo list:</h2>
 
+        
         <ul>
-            <!-- <a>Un élément pour l'exemple</a> -->
             <% for(var i = 0, c = taches.length; i < c; i++) { %>
-               <li> <%= taches[i] %> </li>
+                <li> <%= taches[i] %> <a href="http://localhost:8080/todolist/supprimer?id=<%=i%>">del</a> </li>
             <%}%>
         </ul>
+        
         <br>
         <div name="ajoutElement">
             <form method="POST" action="/todolist/ajouter">

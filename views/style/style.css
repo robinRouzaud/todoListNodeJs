@@ -3,7 +3,7 @@ h1 {
     color: White;
 }
 
-ul {
+ul {    /* Affiche la liste au centre de la page */
     display:table;
     margin:0 auto;
 }
