@@ -10,6 +10,7 @@ var app = express();
 var taches = [];
 
 app.use(express.static(__dirname + '/views'))
+
 .use(cookieSession({
     secret: 'todoSecret'}
 ))

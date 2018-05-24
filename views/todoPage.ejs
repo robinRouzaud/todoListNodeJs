@@ -14,7 +14,7 @@
         
         <ul>
             <% for(var i = 0, c = taches.length; i < c; i++) { %>
-                <li> <%= taches[i] %> <a href="http://localhost:8080/todolist/supprimer?id=<%=i%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a> </li>
+                <li><a href="http://localhost:8080/todolist/supprimer?id=<%=i%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a><%= taches[i] %></li>
             <%}%>
         </ul>
         
