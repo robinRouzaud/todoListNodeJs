@@ -8,6 +8,12 @@ ul {    /* Affiche la liste au centre de la page */
     margin:0 auto;
 }
 
-.ajoutElement {
+#ajoutElement {
     text-align: center;
+}
+
+img.deleteIcon {
+    vertical-align: text-bottom;
+    width: 20px;
+    height: 20px;
 }
