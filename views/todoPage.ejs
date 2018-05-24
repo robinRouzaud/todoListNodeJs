@@ -11,12 +11,12 @@
 
         <h2>Notre fameuse ToDo list:</h2>
 
-        <li>
+        <ul>
             <!-- <a>Un élément pour l'exemple</a> -->
             <% for(var i = 0, c = taches.length; i < c; i++) { %>
-               <a> <%= taches[i] %> </a>
+               <li> <%= taches[i] %> </li>
             <%}%>
-        </li>
+        </ul>
         <br>
         <div name="ajoutElement">
             <form method="POST" action="/todolist/ajouter">

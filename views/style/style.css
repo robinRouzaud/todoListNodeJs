@@ -3,8 +3,9 @@ h1 {
     color: White;
 }
 
-li {
-    text-align: center;
+ul {
+    display:table;
+    margin:0 auto;
 }
 
 .ajoutElement {
