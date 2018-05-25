@@ -11,6 +11,8 @@ var taches = [];
 
 app.use(express.static(__dirname + '/views'))
 
+.disable('x-powered-by')
+
 .use(cookieSession({
     secret: 'todoSecret'}
 ))
