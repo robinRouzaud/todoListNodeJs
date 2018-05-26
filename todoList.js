@@ -7,15 +7,23 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var taches = [];
+app.use(cookieSession({
+        name: 'session',
+        secret: 'todoSecret'
+    }
+))
 
-app.use(express.static(__dirname + '/views'))
+.use(function(req, res, next) {
+    console.log(req)
+    if(typeof(req.session.taches) === 'undefined') {
+        req.session.taches = [];
+    }
+    next();
+})
+
+.use(express.static(__dirname + '/views'))
 
 .disable('x-powered-by')
-
-.use(cookieSession({
-    secret: 'todoSecret'}
-))
 
 .use(urlencodedParser = bodyParser.urlencoded({ extended: false }))
 
@@ -26,33 +34,25 @@ app.use(express.static(__dirname + '/views'))
 })
 
 .get('/todolist', function(req, res) {
-    res.render('todoPage.ejs', {taches: taches});
+    res.render('todoPage.ejs', {taches: req.session.taches});
 })
 
 .post('/todolist/ajouter', function(req, res) {
-    taches.push(req.body.task.toString());
-    console.log(taches);
-    res.render('todoPage.ejs', {taches: taches});
+    req.session.taches.push(req.body.task.toString());
+    //console.log(taches);
+    res.render('todoPage.ejs', {taches: req.session.taches});
 })
 
 .get('/todolist/supprimer', function(req, res) {
-    var idTaskToDelete = querystring.parse(url.parse(req.url).query);
-    var deletedTask = taches[idTaskToDelete['id']];
-    taches.splice(idTaskToDelete['id'], 1);
-    res.render('todoPage.ejs', {taches: taches});
+    var taskToDelete = querystring.parse(url.parse(req.url).query);
+    //var deletedTask = taches[idTaskToDelete['id']];
+    req.session.taches.splice(taskToDelete['id'], 1);
+    res.render('todoPage.ejs', {taches: req.session.taches});
 })
 
 .use(function(req, res, next) {
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send("Page inconnue!"); 
 });
-
-/*Implémentation de la ToDo list:
-Dans un premier temps on veut afficher un input text et un bouton valider. OK
-Lorsque je rentre une tâche (contrôler que l'utilisateur ne rentre pas une chaîne de caractères vide)
-et que l'on appuie sur "valider", la tâche doit être ajoutée à la liste.
-*/
-
-
 
 app.listen(8080);
