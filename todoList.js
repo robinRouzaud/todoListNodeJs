@@ -14,9 +14,10 @@ app.use(cookieSession({
 ))
 
 .use(function(req, res, next) {
-    console.log(req)
+    console.log(typeof(req.session));
     if(typeof(req.session.taches) === 'undefined') {
         req.session.taches = [];
+        req.session.username = '';
     }
     next();
 })
@@ -29,6 +30,10 @@ app.use(cookieSession({
 
 .use(bodyParser.json())
 
+.post('/login', function(req, res) {
+    
+})
+
 .get('/', function(req, res) {
     res.render('accueil.ejs');
 })
@@ -39,7 +44,8 @@ app.use(cookieSession({
 
 .post('/todolist/ajouter', function(req, res) {
     req.session.taches.push(req.body.task.toString());
-    //console.log(taches);
+    // On ajoute une tâche au cookie, on veut l'ajouter à la BDD
+    // Une méthode vient chercher la tâche: "ajouterTache()" issue d'une classe différente
     res.render('todoPage.ejs', {taches: req.session.taches});
 })
 
