@@ -58,4 +58,6 @@ orm.connect('postgresql://admin_tp_todo_list:*****@localhost/todo_list', functio
     });
 
     TaskList.hasMany('elements', Task, {field: 'listId'});
+
+    User.hasOne('list', TaskList, {field: 'taskListId'});
 });
