@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('todo_list_tp', 'postgres', 'RbnRzd111091', {
+const sequelize = new Sequelize('todo_list_tp', 'postgres', '*******', {
     host: 'localhost',
     dialect: 'postgres',
     pool: {
