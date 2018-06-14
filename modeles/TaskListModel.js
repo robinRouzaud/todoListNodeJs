@@ -1,17 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('task_list', {
         taskListId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUIDV1,
+            defaultValue: DataTypes.UUIDV1,
             autoIncrement: true,
             primaryKey: true,
-            field: 'task_list_id',
+            field: 'liste_id',
             get() {
                 return this.getDataValue('taskListId');
             }
         },
         taskListName: {
             type: DataTypes.STRING,
-            field: 'task_list_name',
+            field: 'liste_nom',
             get() {
                 return this.getDataValue('taskListName');
             },
@@ -21,11 +22,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         userId: {
             type: DataTypes.INTEGER,
-            references: 'user',
-            referencesKey: 'user_id'
+            references: 'utilisateur',
+            referencesKey: 'user_id',
+            field: 'user_id'
         }
     }, {
-        tableName: 'task_list',
+        tableName: 'liste',
         timestamps: false
     });
 };

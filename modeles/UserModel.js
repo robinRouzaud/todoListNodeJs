@@ -2,15 +2,19 @@ module.exports = (sequelize, DataTypes) => {
     return sequelize.define('user', {
         userId:{
             // L'ID est géré par Sequelize:
-            //type: DataTypes.UUDIV1   -> En base, le type d'user_id est VARCHAR(X)
-            //defaultValue: DataTypes.UUIDV1,
+            type: DataTypes.UUIDV1,   //-> En base, le type d'user_id est VARCHAR(X)
+            defaultValue: DataTypes.UUIDV1,
             //L'id est géré par le sgbd:
-            type: DataTypes.INTEGER, // -> En base le type est SERIAL (postgresql)
-            autoIncrement: true,
+            //type: DataTypes.INTEGER, // -> En base le type est SERIAL (postgresql)
+            //autoIncrement: true,
             primaryKey: true,
             field: 'user_id',
             get() {
                 return this.getDataValue('userId');
+            },
+            set(val) {
+                if (val)
+                this.setDataValue('userId', val);
             }
         },
         prenom: {
