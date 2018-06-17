@@ -9,7 +9,9 @@ var sequelize = new Sequelize(
 );
 
 var models = ['UserModel',
-            'TaskListModel'];
+            'TaskListModel',
+            'TaskModel'
+        ];
 
 models.forEach(function(model) {
     module.exports[model] = sequelize.import(__dirname + '/' + model);
@@ -17,6 +19,7 @@ models.forEach(function(model) {
 
 (function(m) {
     m.UserModel.hasOne(m.TaskListModel);
+    m.TaskListModel.hasMany(m.TaskModel);
 })(module.exports);
 
 module.exports.sequelize = sequelize;
