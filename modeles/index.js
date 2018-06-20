@@ -1,3 +1,7 @@
+/*
+Model index file
+*/
+
 var Sequelize = require('sequelize');
 var config = require('../../config/default').database;
 

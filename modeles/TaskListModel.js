@@ -1,3 +1,7 @@
+/*
+TaskList model definition file
+*/
+
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('task_list', {
         taskListId: {

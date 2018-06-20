@@ -1,36 +1,15 @@
 /*
 Classe utilisée afin de tester l'ajout de données en base
+Illustration sur l'utilisation des Promises et de la nécessité d'utiliser ".then()"
 */
-var models = require('./modeles');
 
-var User = models.UserModel;
+var dao = require('./dao');
 
-var TaskList = models.TaskListModel;
-
-var Task = models.TaskModel;
-
-var User1 = User.build({prenom: 'Utilisateur 31', nom: 'Un nom 31', eMail: 'prenom.nom31@email.com', password: 'password31'});
-
-User1.save()
-    .then(() => {
-        console.log('Utilisateur enregistré.');
-        var TaskList1 = TaskList.build({taskListName: 'liste31', userId: User1.get('userId')});
-        TaskList1.save().then(() => {
-            console.log('Liste enregistrée.');
-            var Task1 = Task.build({taskName: 'tache31', taskListId: TaskList1.get('taskListId')});
-            Task1.save().then(() => {
-                console.log('Tâche 31 enregistrée.');
-                var Task2 = Task.build({taskName: 'tache32', taskListId: TaskList1.get('taskListId')});
-                Task2.save().then(() => {
-                    console.log('Tâche 32 enregistrée.');
+var user1 = dao.UserDAO.createUser('prenomDAO9', 'nomDAO9', 'emailDAO9@test.com', 'passwordDAO9')
+                .then(function(user) {
+                    console.log('User.nom: \n' + user.nom);
                 });
-            });
-        });
-    });
 
-/*
-var TaskList1 = TaskList.build({taskListName: 'liste2', userId: User1.get('userId')});
+console.log('Essai 1: \n' + user1);
 
-TaskList1.save()
-    .then(console.log('Liste enregistré.'));
-*/
+console.log('Essai 2: \n' + dao.UserDAO.createUser('prenomDAO10', 'nomDAO10', 'emailDAO10@test.com', 'passwordDAO10'));
