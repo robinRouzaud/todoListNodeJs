@@ -26,3 +26,12 @@ module.exports.createUser = (prenom, nom, eMail, password) => {
                         eMail: eMail,
                         password: password});
 };
+
+module.exports.findUserByEmail = (eMail) => {
+    return UserModel.findOne({
+        where: {eMail: eMail}
+    })
+    /*.then((user) => {
+        console.log('Utilisateur ' + user.prenom + ' retrouvé.')
+    });*/
+};
