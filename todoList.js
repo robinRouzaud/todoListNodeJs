@@ -4,6 +4,7 @@ var url = require('url');
 var querystring = require('querystring');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
+var dao = require('./dao');
 
 var app = express();
 
@@ -14,10 +15,14 @@ app.use(cookieSession({
 ))
 
 .use(function(req, res, next) {
-    console.log(typeof(req.session));
+    //console.log(typeof(req.session));
     if(typeof(req.session.taches) === 'undefined') {
         req.session.taches = [];
+        console.log('Taches: ' + typeof(req.session.taches));
+    }
+    if(typeof(req.session.username) === 'undefined') {
         req.session.username = '';
+        console.log('Username: ' + typeof(req.session.username));
     }
     next();
 })
@@ -31,7 +36,14 @@ app.use(cookieSession({
 .use(bodyParser.json())
 
 .post('/login', function(req, res) {
-    
+    console.log(typeof(req.session.username));
+    dao.UserDAO.findUserByEmail(req.body.username.toString())
+        .then(function(user) {
+            req.session.username = user.eMail.toString();
+        })
+        .then(function() {
+            res.render('todoPage.ejs', {username: req.session.username, taches: req.session.taches});
+        });
 })
 
 .get('/', function(req, res) {

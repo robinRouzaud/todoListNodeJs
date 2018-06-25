@@ -35,8 +35,8 @@ dao.UserDAO.createUser('PrenomDAO10', 'nomDAO10','emailDAO10@test.com', 'passwor
 
 */
 
-dao.UserDAO.findUserByEmail("emailDAO10@test.com")
+dao.UserDAO.findUserByEmail("emailDAO101@test.com")
     .then(user => {
-        console.log(user.userId);
+        console.log(user);
     });
 
