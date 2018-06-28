@@ -12,3 +12,10 @@ module.exports.createTaskList = (taskListName, userId) => {
         userId: userId
     });
 };
+
+module.exports.findTaskListByUserId = (userId) => {
+    console.log('UserId : ' + typeof(userId));
+    return TaskListModel.findOne({
+        where: {userId: userId}
+    })
+};

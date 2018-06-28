@@ -12,3 +12,9 @@ module.exports.createTask = (taskName, taskListId) => {
         taskListId: taskListId
     });
 };
+
+module.exports.findTasksByListId = (taskListId) => {
+    return TaskModel.findAll({
+        where: {taskListId: taskListId}
+    })
+};

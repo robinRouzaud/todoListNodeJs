@@ -21,10 +21,11 @@ module.exports.builAndSaveUser = (prenom, nom, eMail, password) => {
 };
 
 module.exports.createUser = (prenom, nom, eMail, password) => {
-    return UserModel.create({prenom: prenom,
-                        nom: nom,
-                        eMail: eMail,
-                        password: password});
+    return UserModel.create({
+        prenom: prenom,
+        nom: nom,
+        eMail: eMail,
+        password: password});
 };
 
 module.exports.findUserByEmail = (eMail) => {

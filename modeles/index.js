@@ -22,8 +22,10 @@ models.forEach(function(model) {
 });
 
 (function(m) {
-    m.UserModel.hasOne(m.TaskListModel);
-    m.TaskListModel.hasMany(m.TaskModel);
+    //Nécessaire d'ajouter les foreign keys à ce niveau
+    //Sinon Sequelize ajoute une colonne dans la sélection
+    m.UserModel.hasOne(m.TaskListModel, {foreignKey: 'user_id'}); 
+    m.TaskListModel.hasMany(m.TaskModel, {foreignKey: 'liste_id'});
 })(module.exports);
 
 module.exports.sequelize = sequelize;
