@@ -37,46 +37,61 @@ app.use(cookieSession({
 
 .use(bodyParser.json())
 
-.post('/login', function(req, res) {
-    console.log(typeof(req.session.username));
-    dao.UserDAO.findUserByEmail(req.body.username.toString())
-        
-    .then(function(user) {
-        req.session.username = user.eMail.toString();
-        dao.TaskListDAO.findTaskListByUserId(user.userId.toString())
+.post('/login', function(req, res, next) {
+    if (req.session.username === '') {
+        //dao.UserDAO.findUserByEmail(req.body.username.toString())
+        dao.UserDAO.findUserByEmailAndPassword(req.body.username.toString(), req.body.password.toString())
+        .then(function(user) {
+            req.session.username = user.eMail.toString();
+            dao.TaskListDAO.findTaskListByUserId(user.userId.toString())
 
-        .then(function(taskList) {
-            req.session.taskList = taskList.taskListName;
-            dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
+            .then(function(taskList) {
+                req.session.taskList = taskList.taskListName;
+                dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
 
-            .then(function(tasks) {
-                tasks.forEach(element => {
-                    req.session.taches.push(element.taskName.toString());
+                .then(function(tasks) {
+                    tasks.forEach(element => {
+                        req.session.taches.push(element.taskName.toString());
+                    });
+
+                })
+                
+                .then(function() {
+                    res.render('todoPage.ejs', {
+                        username: req.session.username, 
+                        taskListName: req.session.taskList,
+                        taches: req.session.taches
+                    });
                 });
 
-            })
-            
-            .then(function() {
-                res.render('todoPage.ejs', {
-                    username: req.session.username, 
-                    taskListName: req.session.taskList,
-                    taches: req.session.taches
-                });
             });
-
+        
+        })
+        .catch((err) => {
+            console.log('User not found!!!!!!');
+            console.log(err);
+            res.render('accueil.ejs', {
+                wrongPassword: true
+            });
+            console.error(err);
         });
+    } else {
+        res.render('todoPage.ejs', {
+            username: req.session.username, 
+            taskListName: req.session.taskList,
+            taches: req.session.taches
+        });
+    }
 
-    });
-    
 })
 
 .get('/', function(req, res) {
     if (req.session.username === '') {
-        console.log('Username: ' + req.session.username);
-        res.render('accueil.ejs');
+        res.render('accueil.ejs', {
+            wrongPassword: false
+        });
     }
     else {
-        console.log('Username: ' + req.session.username);
         res.render('todoPage.ejs', {
             username: req.session.username,
             taskListName: req.session.taskList,
@@ -87,7 +102,9 @@ app.use(cookieSession({
 
 .get('/todolist', function(req, res) {
     if (req.session.username === '')
-        res.render('accueil.ejs');
+        res.render('accueil.ejs', {
+            wrongPassword: false
+        });
     else
         res.render('todoPage.ejs', {
             username: req.session.username,
@@ -98,7 +115,9 @@ app.use(cookieSession({
 
 .post('/todolist/ajouter', function(req, res) {
     if (req.session.username === '')
-        res.render('accueil.ejs');
+        res.render('accueil.ejs', {
+            wrongPassword: false
+        });
     else {    
         req.session.taches.push(req.body.task.toString());
         // On ajoute une tâche au cookie, on veut l'ajouter à la BDD
@@ -120,6 +139,16 @@ app.use(cookieSession({
         taskListName: req.session.taskList,
         taches: req.session.taches
     });
+})
+
+.get('/deconnexion', function(req, res) {
+    req.session.username = '';
+    req.session.eMail = '';
+    req.session.nomListeTache = '';
+    req.session.taches = [];
+    res.render('accueil.ejs', {
+        wrongPassword: false
+    })
 })
 
 .use(function(req, res, next) {

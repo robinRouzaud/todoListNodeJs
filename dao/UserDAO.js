@@ -32,7 +32,13 @@ module.exports.findUserByEmail = (eMail) => {
     return UserModel.findOne({
         where: {eMail: eMail}
     })
-    /*.then((user) => {
-        console.log('Utilisateur ' + user.prenom + ' retrouvé.')
-    });*/
+};
+
+module.exports.findUserByEmailAndPassword = (eMail, pwd) => {
+    return UserModel.findOne({
+        where: {
+            eMail: eMail,
+            password: pwd
+        }
+    })
 };

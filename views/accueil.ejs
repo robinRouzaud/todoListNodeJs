@@ -7,9 +7,15 @@
         <h2>On va essayer de faire une ToDo list dans cet exercice en suivant ce <a href="http://localhost:8080/todolist">lien</a></h2>
         <div name="login">
             <form method="POST" action="/login">
-                <input type="text" name="username">
+                <input type="text" name="username" value="emailDAO10@test.com">
+                <input type="text" name="password" value="password">
                 <input type="submit" value="valider">
             </form>
         </div>
+        <% if(wrongPassword === true) { %>
+            <script>
+                alert('Le mot de passe entré est erroné.');
+            </script>
+        <% } %>
     </body>
 </html>
