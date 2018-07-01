@@ -46,6 +46,13 @@ app.use(cookieSession({
             dao.TaskListDAO.findTaskListByUserId(user.userId.toString())
 
             .then(function(taskList) {
+                if(taskList === null) {
+                    res.render('todoPage.ejs', {
+                        username: req.session.username, 
+                        taskListName: '',
+                        taches: []
+                    });
+                } else {
                 req.session.taskList = taskList.taskListName;
                 dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
 
@@ -63,7 +70,7 @@ app.use(cookieSession({
                         taches: req.session.taches
                     });
                 });
-
+                }
             });
         
         })
