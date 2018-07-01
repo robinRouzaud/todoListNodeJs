@@ -1,4 +1,3 @@
-var http = require('http');
 var express = require('express');
 var url = require('url');
 var querystring = require('querystring');
@@ -58,7 +57,11 @@ app.use(cookieSession({
             })
             
             .then(function() {
-                res.render('todoPage.ejs', {username: req.session.username, taskListName: req.session.taskList,taches: req.session.taches});
+                res.render('todoPage.ejs', {
+                    username: req.session.username, 
+                    taskListName: req.session.taskList,
+                    taches: req.session.taches
+                });
             });
 
         });
@@ -68,34 +71,55 @@ app.use(cookieSession({
 })
 
 .get('/', function(req, res) {
-    res.render('accueil.ejs');
+    if (req.session.username === '') {
+        console.log('Username: ' + req.session.username);
+        res.render('accueil.ejs');
+    }
+    else {
+        console.log('Username: ' + req.session.username);
+        res.render('todoPage.ejs', {
+            username: req.session.username,
+            taskListName: req.session.taskList,
+            taches: req.session.taches
+        });
+    }
 })
 
 .get('/todolist', function(req, res) {
-    res.render('todoPage.ejs', 
-        {username: req.session.username,
-        taskListName: req.session.taskList,
-        taches: req.session.taches});
+    if (req.session.username === '')
+        res.render('accueil.ejs');
+    else
+        res.render('todoPage.ejs', {
+            username: req.session.username,
+            taskListName: req.session.taskList,
+            taches: req.session.taches
+        });
 })
 
 .post('/todolist/ajouter', function(req, res) {
-    req.session.taches.push(req.body.task.toString());
-    // On ajoute une tâche au cookie, on veut l'ajouter à la BDD
-    // Une méthode vient chercher la tâche: "ajouterTache()" issue d'une classe différente
-    res.render('todoPage.ejs', 
-        {username: req.session.username,
-        taskListName: req.session.taskList,
-        taches: req.session.taches});
+    if (req.session.username === '')
+        res.render('accueil.ejs');
+    else {    
+        req.session.taches.push(req.body.task.toString());
+        // On ajoute une tâche au cookie, on veut l'ajouter à la BDD
+        // Une méthode viendra chercher la fonction: "ajouterTache()" issue d'une classe différente
+        res.render('todoPage.ejs', {
+            username: req.session.username,
+            taskListName: req.session.taskList,
+            taches: req.session.taches
+        });
+    }
 })
 
 .get('/todolist/supprimer', function(req, res) {
     var taskToDelete = querystring.parse(url.parse(req.url).query);
     //var deletedTask = taches[idTaskToDelete['id']];
     req.session.taches.splice(taskToDelete['id'], 1);
-    res.render('todoPage.ejs', 
-        {username: req.session.username,
+    res.render('todoPage.ejs', {
+        username: req.session.username,
         taskListName: req.session.taskList,
-        taches: req.session.taches});
+        taches: req.session.taches
+    });
 })
 
 .use(function(req, res, next) {
