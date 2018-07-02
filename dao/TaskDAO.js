@@ -15,6 +15,17 @@ module.exports.createTask = (taskName, taskListId) => {
 
 module.exports.findTasksByListId = (taskListId) => {
     return TaskModel.findAll({
-        where: {taskListId: taskListId}
+        raw: true,
+        where: {
+            taskListId: taskListId
+        }        
+    })
+};
+
+module.exports.deleteTaskById = (taskId) => {
+    return TaskModel.destroy({
+        where: {
+            taskId: taskId
+        }
     })
 };

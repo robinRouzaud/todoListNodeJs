@@ -7,7 +7,7 @@
     <body>
         <center>
             <h1>Projet ToDo list de <%= username %>!</h1>
-            <a href="http://localhost:8080/deconnexion"><button>Déconnexion</button></a>
+            <a href="http://192.168.1.17:8080/deconnexion"><button>Déconnexion</button></a>
         </center>
 
         <h2>Et sa Todo List <%= taskListName %>:</h2>
@@ -15,11 +15,13 @@
         
         <ul>
             <% for(var i = 0, c = taches.length; i < c; i++) { %>
-                <li><a href="http://localhost:8080/todolist/supprimer?id=<%=i%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a><%= taches[i] %></li>
+                <% var id = taches[i].taskId %>
+                <li><a href="http://192.168.1.17:8080/todolist/supprimer?id=<%=id%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a><%= taches[i].taskName %></li>
             <%}%>
         </ul>
         
         <br>
+
         <div name="ajoutElement">
             <form method="POST" action="/todolist/ajouter">
                 <input type="text" name="task">

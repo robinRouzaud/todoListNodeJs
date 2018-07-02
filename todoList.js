@@ -39,7 +39,6 @@ app.use(cookieSession({
 
 .post('/login', function(req, res, next) {
     if (req.session.username === '') {
-        //dao.UserDAO.findUserByEmail(req.body.username.toString())
         dao.UserDAO.findUserByEmailAndPassword(req.body.username.toString(), req.body.password.toString())
         .then(function(user) {
             req.session.username = user.eMail.toString();
@@ -58,7 +57,7 @@ app.use(cookieSession({
 
                 .then(function(tasks) {
                     tasks.forEach(element => {
-                        req.session.taches.push(element.taskName.toString());
+                        req.session.taches.push(element);
                     });
 
                 })
@@ -138,14 +137,45 @@ app.use(cookieSession({
 })
 
 .get('/todolist/supprimer', function(req, res) {
-    var taskToDelete = querystring.parse(url.parse(req.url).query);
+    //var taskToDelete = querystring.parse(url.parse(req.url).query);
     //var deletedTask = taches[idTaskToDelete['id']];
-    req.session.taches.splice(taskToDelete['id'], 1);
-    res.render('todoPage.ejs', {
+    var taskIdToDelete = querystring.parse(url.parse(req.url).query).id;
+    var j = 0;
+
+    dao.TaskDAO.deleteTaskById(taskIdToDelete)
+
+    .then(
+        res.redirect('/')
+    );
+/*
+    req.session.taches.forEach(function(elt, index) {
+        if(elt.taskId === taskIdToDelete) {
+            //return index;
+            console.log(elt.taskId.toString() + ' & ' + index);
+            dao.TaskDAO.deleteTaskById(elt.taskId)
+
+            .then(
+                res.redirect('/')
+            );
+            
+            console.log('Index à supprimer :' + index);
+        }  
+    });*/
+    /*
+    dao.taskDAO.deleteTaskById(req.session.taches.splice(j, 1).taskId.toString())
+
+    .then(res.redirect('/'));
+    */
+    /*
+    dao.taskDAO.deleteTaskById(req.session.taches.splice(j, 1).taskId.toString())
+    
+    .then(res.redirect('/'));
+    */
+    /*res.render('todoPage.ejs', {
         username: req.session.username,
         taskListName: req.session.taskList,
         taches: req.session.taches
-    });
+    });*/
 })
 
 .get('/deconnexion', function(req, res) {
