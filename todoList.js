@@ -23,6 +23,9 @@ app.use(cookieSession({
     if(typeof(req.session.nomListeTache) === 'undefined') {
         req.session.nomListeTache = '';
     }
+    if(typeof(req.session.listeId) === 'undefined') {
+        req.session.listeId = '';
+    }
     if(typeof(req.session.taches) === 'undefined') {
         req.session.taches = [];
     }
@@ -53,6 +56,7 @@ app.use(cookieSession({
                     });
                 } else {
                 req.session.taskList = taskList.taskListName;
+                req.session.listeId = taskList.taskListId;
                 dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
 
                 .then(function(tasks) {
@@ -124,15 +128,24 @@ app.use(cookieSession({
         res.render('accueil.ejs', {
             wrongPassword: false
         });
-    else {    
-        req.session.taches.push(req.body.task.toString());
+    else {
+        dao.TaskDAO.createTask(req.body.task.toString(), req.session.listeId)
+        
+        .then(function(task) {
+            req.session.taches.push(task.dataValues);
+        })
+
+        .then(function() {
+            res.redirect('/');
+        });
+        
         // On ajoute une tâche au cookie, on veut l'ajouter à la BDD
         // Une méthode viendra chercher la fonction: "ajouterTache()" issue d'une classe différente
-        res.render('todoPage.ejs', {
+        /*res.render('todoPage.ejs', {
             username: req.session.username,
             taskListName: req.session.taskList,
             taches: req.session.taches
-        });
+        });*/
     }
 })
 
@@ -141,41 +154,20 @@ app.use(cookieSession({
     //var deletedTask = taches[idTaskToDelete['id']];
     var taskIdToDelete = querystring.parse(url.parse(req.url).query).id;
     var j = 0;
-
     dao.TaskDAO.deleteTaskById(taskIdToDelete)
+
+    .then(
+        req.session.taches.forEach(function(elt) {
+            if(elt.taskId === taskIdToDelete) {
+                req.session.taches.splice(j, 1);
+            }
+            j++;
+        })
+    )
 
     .then(
         res.redirect('/')
     );
-/*
-    req.session.taches.forEach(function(elt, index) {
-        if(elt.taskId === taskIdToDelete) {
-            //return index;
-            console.log(elt.taskId.toString() + ' & ' + index);
-            dao.TaskDAO.deleteTaskById(elt.taskId)
-
-            .then(
-                res.redirect('/')
-            );
-            
-            console.log('Index à supprimer :' + index);
-        }  
-    });*/
-    /*
-    dao.taskDAO.deleteTaskById(req.session.taches.splice(j, 1).taskId.toString())
-
-    .then(res.redirect('/'));
-    */
-    /*
-    dao.taskDAO.deleteTaskById(req.session.taches.splice(j, 1).taskId.toString())
-    
-    .then(res.redirect('/'));
-    */
-    /*res.render('todoPage.ejs', {
-        username: req.session.username,
-        taskListName: req.session.taskList,
-        taches: req.session.taches
-    });*/
 })
 
 .get('/deconnexion', function(req, res) {
