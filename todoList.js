@@ -138,20 +138,10 @@ app.use(cookieSession({
         .then(function() {
             res.redirect('/');
         });
-        
-        // On ajoute une tâche au cookie, on veut l'ajouter à la BDD
-        // Une méthode viendra chercher la fonction: "ajouterTache()" issue d'une classe différente
-        /*res.render('todoPage.ejs', {
-            username: req.session.username,
-            taskListName: req.session.taskList,
-            taches: req.session.taches
-        });*/
     }
 })
 
 .get('/todolist/supprimer', function(req, res) {
-    //var taskToDelete = querystring.parse(url.parse(req.url).query);
-    //var deletedTask = taches[idTaskToDelete['id']];
     var taskIdToDelete = querystring.parse(url.parse(req.url).query).id;
     var j = 0;
     dao.TaskDAO.deleteTaskById(taskIdToDelete)
