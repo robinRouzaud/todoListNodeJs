@@ -4,6 +4,7 @@ var querystring = require('querystring');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var dao = require('./dao');
+var handlers = require('./handlers').routeHandler;
 
 var app = express();
 
@@ -14,22 +15,7 @@ app.use(cookieSession({
 ))
 
 .use(function(req, res, next) {
-    if(typeof(req.session.username) === 'undefined') {
-        req.session.username = '';
-    }
-    if(typeof(req.session.userId) === 'undefined') {
-        req.session.userId = '';
-    }
-    if(typeof(req.session.nomListeTache) === 'undefined') {
-        req.session.nomListeTache = '';
-    }
-    if(typeof(req.session.listeId) === 'undefined') {
-        req.session.listeId = '';
-    }
-    if(typeof(req.session.taches) === 'undefined') {
-        req.session.taches = [];
-    }
-    next();
+    handlers.init(req, next);
 })
 
 .use(express.static(__dirname + '/views'))
@@ -40,87 +26,16 @@ app.use(cookieSession({
 
 .use(bodyParser.json())
 
-.post('/login', function(req, res, next) {
-    if (req.session.username === '') {
-        dao.UserDAO.findUserByEmailAndPassword(req.body.username.toString(), req.body.password.toString())
-        .then(function(user) {
-            req.session.username = user.eMail.toString();
-            dao.TaskListDAO.findTaskListByUserId(user.userId.toString())
-
-            .then(function(taskList) {
-                if(taskList === null) {
-                    res.render('todoPage.ejs', {
-                        username: req.session.username, 
-                        taskListName: '',
-                        taches: []
-                    });
-                } else {
-                req.session.taskList = taskList.taskListName;
-                req.session.listeId = taskList.taskListId;
-                dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
-
-                .then(function(tasks) {
-                    tasks.forEach(element => {
-                        req.session.taches.push(element);
-                    });
-
-                })
-                
-                .then(function() {
-                    res.render('todoPage.ejs', {
-                        username: req.session.username, 
-                        taskListName: req.session.taskList,
-                        taches: req.session.taches
-                    });
-                });
-                }
-            });
-        
-        })
-        .catch((err) => {
-            console.log('User not found!!!!!!');
-            console.log(err);
-            res.render('accueil.ejs', {
-                wrongPassword: true
-            });
-            console.error(err);
-        });
-    } else {
-        res.render('todoPage.ejs', {
-            username: req.session.username, 
-            taskListName: req.session.taskList,
-            taches: req.session.taches
-        });
-    }
-
+.post('/load', function(req, res, next) {
+    handlers.loader(req, res);
 })
 
 .get('/', function(req, res) {
-    if (req.session.username === '') {
-        res.render('accueil.ejs', {
-            wrongPassword: false
-        });
-    }
-    else {
-        res.render('todoPage.ejs', {
-            username: req.session.username,
-            taskListName: req.session.taskList,
-            taches: req.session.taches
-        });
-    }
+    handlers.todoList(req, res);
 })
 
 .get('/todolist', function(req, res) {
-    if (req.session.username === '')
-        res.render('accueil.ejs', {
-            wrongPassword: false
-        });
-    else
-        res.render('todoPage.ejs', {
-            username: req.session.username,
-            taskListName: req.session.taskList,
-            taches: req.session.taches
-        });
+        handlers.todoList(req, res);
 })
 
 .post('/todolist/ajouter', function(req, res) {

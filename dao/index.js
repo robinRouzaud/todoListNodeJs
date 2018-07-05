@@ -2,9 +2,8 @@
 DAO index file
 */
 
-//var modelIndex = require('../modeles');
-
-var DAOs = ['UserDAO',
+var DAOs = [
+    'UserDAO',
     'TaskListDAO',
     'TaskDAO'
 ];
