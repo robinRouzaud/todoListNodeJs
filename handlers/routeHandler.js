@@ -33,38 +33,7 @@ module.exports.loader = (req, res) => {
 
             req.session.username = user.eMail.toString();
             req.session.userId   = user.userId.toString();
-            dao.TaskListDAO.findTaskListByUserId(user.userId.toString())
-
-            .then(function(taskList) {
-
-                if(taskList === null) {
-                    return res.render('todoPage.ejs', {
-                        username: req.session.username, 
-                        taskListName: '',
-                        taches: []
-                    });
-                } else {
-                    req.session.taskList = taskList.taskListName;
-                    req.session.listeId  = taskList.taskListId;
-                    dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
-
-                    .then(function(tasks) {
-                        tasks.forEach(element => {
-                            req.session.taches.push(element);
-                        });
-
-                    })
-                    
-                    .then(function() {
-                        return res.render('todoPage.ejs', {
-                            username: req.session.username, 
-                            taskListName: req.session.taskList,
-                            taches: req.session.taches
-                        });
-                    });
-                }
-            });
-        
+            loadTaskList(req.session.userId, req, res);        
         })
         .catch((err) => {
             console.log('User not found!');
@@ -75,38 +44,7 @@ module.exports.loader = (req, res) => {
             });
         });
     } else if(req.session.username != '' && !(typeof(req.session.taches) === 'undefined')) {
-        dao.TaskListDAO.findTaskListByUserId(req.session.userId.toString())
-
-            .then(function(taskList) {
-
-                if(taskList === null) {
-                    return res.render('todoPage.ejs', {
-                        username: req.session.username, 
-                        taskListName: '',
-                        taches: []
-                    });
-                } else {
-                    req.session.taskList = taskList.taskListName;
-                    req.session.listeId  = taskList.taskListId;
-                    req.session.taches   = [];
-                    dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
-
-                    .then(function(tasks) {
-                        tasks.forEach(element => {
-                            req.session.taches.push(element);
-                        });
-
-                    })
-                    
-                    .then(function() {
-                        return res.render('todoPage.ejs', {
-                            username: req.session.username, 
-                            taskListName: req.session.taskList,
-                            taches: req.session.taches
-                        });
-                    });
-                }
-            });
+        loadTaskList(req.session.userId, req, res);
     }
 }
 
@@ -168,4 +106,39 @@ module.exports.deconnexion = (req, res) => {
     res.render('accueil.ejs', {
         wrongPassword: false
     })
+}
+
+loadTaskList = (IdUser, req, res) => {
+    dao.TaskListDAO.findTaskListByUserId(IdUser)
+
+    .then(function(taskList) {
+
+        if(taskList === null) {
+            return res.render('todoPage.ejs', {
+                username: req.session.username, 
+                taskListName: '',
+                taches: []
+            });
+        } else {
+            req.session.taskList = taskList.taskListName;
+            req.session.listeId  = taskList.taskListId;
+            req.session.taches   = [];
+            dao.TaskDAO.findTasksByListId(taskList.taskListId.toString())
+
+            .then(function(tasks) {
+                tasks.forEach(element => {
+                    req.session.taches.push(element);
+                });
+
+            })
+            
+            .then(function() {
+                return res.render('todoPage.ejs', {
+                    username: req.session.username, 
+                    taskListName: req.session.taskList,
+                    taches: req.session.taches
+                });
+            });
+        }
+    });
 }
