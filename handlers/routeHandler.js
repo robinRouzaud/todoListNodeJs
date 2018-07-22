@@ -30,7 +30,6 @@ module.exports.loader = (req, res) => {
         dao.UserDAO.findUserByEmailAndPassword(req.body.username, req.body.password)
 
         .then(function(user) {
-
             req.session.username = user.eMail.toString();
             req.session.userId   = user.userId.toString();
             loadTaskList(req.session.userId, req, res);        

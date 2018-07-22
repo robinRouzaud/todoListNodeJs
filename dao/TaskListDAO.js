@@ -19,3 +19,4 @@ module.exports.findTaskListByUserId = (userId) => {
         where: {userId: userId}
     })
 };
+
