@@ -28,7 +28,8 @@ app.use(cookieSession({
 })
 
 .get('/', function(req, res) {
-    handlers.todoList(req, res);
+    //handlers.todoList(req, res);
+    handlers.loader(req, res);
 })
 
 .get('/todolist', function(req, res) {
