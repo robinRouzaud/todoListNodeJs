@@ -1,5 +1,6 @@
 /*
 Model index file
+ListEnh branch
 */
 
 var Sequelize = require('sequelize');
