@@ -17,5 +17,10 @@
                 alert('Le mot de passe entré est erroné.');
             </script>
         <% } %>
+        <% if(wrongPassword === false) { %>
+            <script>
+                alert('L\'utilisateur n\'a pas été trouvé.');
+            </script>
+        <% } %>
     </body>
 </html>

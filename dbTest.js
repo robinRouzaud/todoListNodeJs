@@ -17,26 +17,37 @@ var user1 = dao.UserDAO.createUser('prenomDAO9', 'nomDAO9', 'emailDAO9@test.com'
 
 //console.log('Essai 2: \n' + dao.UserDAO.createUser('prenomDAO10', 'nomDAO10', 'emailDAO10@test.com', 'passwordDAO10'));
 
-/*
+
 dao.UserDAO.createUser('PrenomDAO10', 'nomDAO10','emailDAO10@test.com', 'passwordDAO10')
     .then(
         (user) => {
-            dao.TaskListDAO.createTaskList('TaskListDAOu10', user.userId)
+            dao.TaskListDAO.createTaskList('TaskList_1_DAOu10', user.userId)
                 .then(
                     (taskList) => {
-                        dao.TaskDAO.createTask('Task1u10', taskList.taskListId);
-                        dao.TaskDAO.createTask('Task2u10', taskList.taskListId);
-                        dao.TaskDAO.createTask('Task3u10', taskList.taskListId);
-                        dao.TaskDAO.createTask('Task4u10', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task1u10L1', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task2u10L1', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task3u10L1', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task4u10L1', taskList.taskListId);
                     }
-                )
+                );
+
+                dao.TaskListDAO.createTaskList('TaskList_2_DAOu10', user.userId)
+                .then(
+                    (taskList) => {
+                        dao.TaskDAO.createTask('Task1u10L2', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task2u10L2', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task3u10L2', taskList.taskListId);
+                        dao.TaskDAO.createTask('Task4u10L2', taskList.taskListId);
+                    }
+                );
+
         }
     );
 
-*/
 
+/*
 dao.UserDAO.findUserByEmail("emailDAO101@test.com")
     .then(user => {
         console.log(user);
     });
-
+*/

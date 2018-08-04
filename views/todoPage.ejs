@@ -10,23 +10,36 @@
             <a href="http://192.168.1.17:8080/deconnexion"><button>Déconnexion</button></a>
         </center>
 
-        <h2>Et sa Todo List <%= taskListName %>:</h2>
+        <% 
+        var listLabel = 'list';
+        var j = 1;
+        console.log(listLabel + j.toString());
+        console.log(content);
+        while (typeof(content[listLabel + j.toString()]) != 'undefined') { 
+            console.log(j);
+            var taches = content[listLabel + j.toString()].tasks;
+            
+            %>
+            <h2>Liste <%= content[listLabel + j].listName %>:</h2>
 
-        
-        <ul>
-            <% for(var i = 0, c = taches.length; i < c; i++) { %>
-                <% var id = taches[i].taskId %>
-                <li><a href="http://192.168.1.17:8080/todolist/supprimer?id=<%=id%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a><%= taches[i].taskName %></li>
-            <%}%>
-        </ul>
-        
-        <br>
+            <ul>
+                <% for(var i = 0, c = taches.length; i < c; i++) { %>
+                    <% var taskId = taches[i].taskId;
+                       var listId = taches[i].taskListId; %>
+                    <li><a href="http://192.168.1.17:8080/todolist/supprimerTache?id=<%=taskId%>&listId=<%=listId%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a><%= taches[i].taskName %></li>
+                <%}%>
+            </ul>
+            
+            <br>
 
-        <div name="ajoutElement">
-            <form method="POST" action="/todolist/ajouter">
-                <input type="text" name="task">
-                <input type="submit" value="Valider">
-            </form>
-        </div>
+            <div name="ajoutTache">
+                <form method="POST" action="/todolist/ajouterTache">
+                    <input type="text" name="task">
+                    <input type="text" name="listeId" value="<%=listId%>" disabled>
+                    <input type="submit" value="Valider">
+                </form>
+            </div>
+        <% j++;
+        } %>
     </body>
 </html>

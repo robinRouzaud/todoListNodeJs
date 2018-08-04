@@ -12,7 +12,7 @@ app.use(cookieSession({
 ))
 
 .use(function(req, res, next) {
-    handlers.init(req, next);
+    handlers.init(req, res, next);
 })
 
 .use(express.static(__dirname + '/views'))
@@ -32,16 +32,17 @@ app.use(cookieSession({
     handlers.loader(req, res);
 })
 
+/*
 .get('/todolist', function(req, res) {
     handlers.todoList(req, res);
+})*/
+
+.post('/todolist/ajouterTache', function(req, res) {
+    handlers.ajouterTache(req, res);
 })
 
-.post('/todolist/ajouter', function(req, res) {
-    handlers.ajouter(req, res);
-})
-
-.get('/todolist/supprimer', function(req, res) {
-    handlers.supprimer(req, res);
+.get('/todolist/supprimerTache', function(req, res) {
+    handlers.supprimerTache(req, res);
 })
 
 .get('/deconnexion', function(req, res) {

@@ -3,7 +3,7 @@ Model index file
 */
 
 var Sequelize = require('sequelize');
-var config = require('../../config/default').database;
+var config = require('../../config/default_lenh').database;
 
 var sequelize = new Sequelize(
     config.name,
@@ -23,9 +23,10 @@ models.forEach(function(model) {
 
 (function(m) {
     //Nécessaire d'ajouter les foreign keys à ce niveau
-    //Sinon Sequelize ajoute une colonne dans la sélection
-    m.UserModel.hasOne(m.TaskListModel, {foreignKey: 'user_id'}); 
-    m.TaskListModel.hasMany(m.TaskModel, {foreignKey: 'liste_id'});
+    //Sinon Sequelize ajoute une colonne dans les champs retournés
+    //par le SELECT
+    m.UserModel.hasMany(m.TaskListModel, {foreignKey: 'userId'}); 
+    m.TaskListModel.hasMany(m.TaskModel, {foreignKey: 'taskListId'});
 })(module.exports);
 
 module.exports.sequelize = sequelize;
