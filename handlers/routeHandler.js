@@ -23,23 +23,38 @@ module.exports.loader = (req, res) => {
     dao.UserDAO.findUserByEmailAndPassword(req.body.username)
 
     .then(user => {
-        
+        console.log('Chargement de l\'utilisateur');
         if(req.body.password === user.password) {
             userFound = true;
             req.session.userId = user.userId.toString();
             req.session.username = user.eMail.toString();
+            return true;
         } else {
             throw err;
         }
     })
 
-    .then(() => {
-        loadTaskLists(req, res);
+    .then(userFound => {
+        if(userFound) {
+            console.log('Chargement du contenu');
+            return loadTaskLists(req, res);
+        } else {
+            return {};
+        }
+    })
+
+    .then(content => {
+        console.log('Le contenu est composé de : ' + content);
+        return res.render('todoPage.ejs', {
+            content: content,
+            username: req.session.username
+        })
     })
 
     .catch(err => {
+        console.log(err);
         if(userFound)
-            return res.render('acceuil.ejs', {
+            return res.render('accueil.ejs', {
                 wrongPassword: true
             });
         else
@@ -99,17 +114,12 @@ loadTaskLists = (req, res) => {
     dao.TaskListDAO.findAllListsByUserId(req.session.userId)
 
     .then(lists => {
-        if(lists.length === 0) {
-            return res.render('todoPage.ejs', {
-                username: req.session.username,
-                content: content
-            });
-        } else {
+        if(lists.length != 0) {
             var i = 0;
             console.log("----------------------");
             console.log("Chargement des listes.");
             console.log("----------------------");
-            return lists.forEach(list => {
+            lists.forEach(list => {
                 i++;
                 //nom de la liste
                 var listNbString = "list" + i;
@@ -146,22 +156,19 @@ loadTaskLists = (req, res) => {
             })
 
         }
-
+        //console.log('Retour du contenu');
+        //return content;
     })
 
     .then(() => {
-        console.log('Envoie de ' + content);
-        return res.render('todoPage.ejs', {
-            username: req.session.username,
-            content: content
-        });
-    });
-/*
-    .then(() => {
-        return res.render('todoPage.ejs', {
-            username: req.session.username,
-            content: content
-        });
-    });*/
+        console.log('Retour du contenu');
+        return content;
+    })
+};
 
+function* labelGeneration(max) {
+    var i = 1;
+    while(i <= max) {
+        yield i;
+    }
 }

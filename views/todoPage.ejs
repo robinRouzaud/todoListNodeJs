@@ -13,9 +13,8 @@
         <% 
         var listLabel = 'list';
         var j = 1;
-        console.log(listLabel + j.toString());
-        console.log(content);
-        while (typeof(content[listLabel + j.toString()]) != 'undefined') { 
+        console.log('Le contenu est ' + content);
+        while (typeof(content[listLabel + j]) != 'undefined') { 
             console.log(j);
             var taches = content[listLabel + j.toString()].tasks;
             
