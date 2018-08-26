@@ -17,3 +17,8 @@ img.deleteIcon {
     width: 20px;
     height: 20px;
 }
+
+/* Cache l'id de la liste à laquelle on ajoute l'élément*/
+#id {
+    display: none;
+}
