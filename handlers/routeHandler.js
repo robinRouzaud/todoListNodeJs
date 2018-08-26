@@ -56,6 +56,10 @@ module.exports.loader = (req, res) => {
     });
 };
 
+module.exports.loadTasks = (req, res) => {
+    return loadTaskLists(req, res)
+}
+
 //Permet l'ajout d'une tâche en base
 //puis redirection vers rechargement des taches
 module.exports.ajouterTache = (req, res) => {
@@ -87,7 +91,7 @@ module.exports.supprimerTache = (req, res) => {
         dao.TaskDAO.deleteTaskById(taskIdToDelete)
 
         .then(() => {
-            loader(req, res);
+            return loadTaskLists(req, res);
         })
     }
 };

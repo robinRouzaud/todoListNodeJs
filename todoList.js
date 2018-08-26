@@ -28,14 +28,11 @@ app.use(cookieSession({
 })
 
 .get('/', function(req, res) {
-    //handlers.todoList(req, res);
-    handlers.loader(req, res);
+    if(req.session.userId === '' & req.session.username === '')
+        handlers.loader(req, res);
+    else
+        handlers.loadTasks(req, res);
 })
-
-/*
-.get('/todolist', function(req, res) {
-    handlers.todoList(req, res);
-})*/
 
 .post('/todolist/ajouterTache', function(req, res) {
     handlers.ajouterTache(req, res);
