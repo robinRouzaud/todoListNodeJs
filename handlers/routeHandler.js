@@ -11,7 +11,7 @@ module.exports.init = (req, res, next) => {
     if(req.session.userId === 'undefined')
         req.session.userId = '';
     if(req.session.username === 'undefined')
-        rq.session.username = '';
+        req.session.username = '';
 
     next();
 };
@@ -39,16 +39,8 @@ module.exports.loader = (req, res) => {
             console.log('Chargement du contenu');
             return loadTaskLists(req, res);
         } else {
-            return {};
+            return [];
         }
-    })
-
-    .then(content => {
-        console.log('Le contenu est composé de : ' + content);
-        return res.render('todoPage.ejs', {
-            content: content,
-            username: req.session.username
-        })
     })
 
     .catch(err => {
@@ -109,66 +101,51 @@ module.exports.deconnexion = (req, res) => {
 }
 
 loadTaskLists = (req, res) => {
-    var content = {};
-
+    //Charger les listes de l'utilisateur
     dao.TaskListDAO.findAllListsByUserId(req.session.userId)
 
     .then(lists => {
-        if(lists.length != 0) {
-            var i = 0;
-            console.log("----------------------");
-            console.log("Chargement des listes.");
-            console.log("----------------------");
-            lists.forEach(list => {
-                i++;
-                //nom de la liste
-                var listNbString = "list" + i;
+        //Listes chargées, on charge les taches de chaque liste
+        var i = 0;
 
-                //Objet liste initialisé
-                content[listNbString] = {};
+        var tasks = Promise.all(lists.map(getTasks))
+        .then(data => {
+            console.log('Récupération des tâches terminées');
+            return data;
+        });
 
-                //Identifiant de la liste
-                //content[listNbString].listId = "";
-
-                //Nom de la liste
-                //content[listNbString].listName = "";
-
-                //liste d'objets tâche
-                content[listNbString].tasks = [];
-
-                //Identifiant de la liste  
-                content[listNbString].listId = list.taskListId.toString();
-
-                content[listNbString].listName = list.taskListName.toString();
-
-                dao.TaskDAO.findTasksByListId(list.taskListId.toString())
-
-                .then(tasks => {
-                    console.log("----------------------");
-                    console.log("Chargement des tâches.");
-                    console.log("----------------------");
-                    tasks.forEach(task => {
-                        console.log(task);
-                        content[listNbString].tasks.push(task);
+        return tasks.then(taches => {
+            taches.forEach(liste => {
+                liste.unshift(
+                    {
+                        taskListName: lists[i].dataValues.taskListName,
+                        taskListId: lists[i].dataValues.taskListId
                     });
-                })
-                
+                i++;
             })
 
-        }
-        //console.log('Retour du contenu');
-        //return content;
+            return taches;
+        })
+        
+        .then(taches => {
+            res.render('todoPage.ejs', {
+                username: req.session.username,
+                taches: taches
+            })
+        });
     })
-
-    .then(() => {
-        console.log('Retour du contenu');
-        return content;
-    })
-};
-
-function* labelGeneration(max) {
-    var i = 1;
-    while(i <= max) {
-        yield i;
-    }
 }
+
+getTasks = (list) => {
+    console.log('Recherche des tâches')
+    return new Promise((resolve, reject) => {
+        resolve(dao.TaskDAO.findTasksByListId(list.dataValues.taskListId));
+    });
+}
+
+
+/*
+loadTaskLists utilise une fonction qui envoie le résultat des requêtes dans content
+Une fois que les noms de listes sont chargés on récupère les taches.
+On envoie les taches dans content
+*/
