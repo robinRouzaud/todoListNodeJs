@@ -13,10 +13,19 @@ module.exports.createTaskList = (taskListName, userId) => {
     });
 };
 
+//Deprecated
 module.exports.findTaskListByUserId = (userId) => {
     console.log('UserId : ' + typeof(userId));
     return TaskListModel.findOne({
         where: {userId: userId}
+    })
+};
+
+module.exports.findAllListsByUserId = (userId) => {
+    return TaskListModel.findAll({
+        where: {
+            userId: userId
+        }
     })
 };
 

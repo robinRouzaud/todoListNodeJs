@@ -34,11 +34,10 @@ module.exports.findUserByEmail = (eMail) => {
     })
 };
 
-module.exports.findUserByEmailAndPassword = (eMail, pwd) => {
+module.exports.findUserByEmailAndPassword = (eMail) => {
     return UserModel.findOne({
         where: {
-            eMail: eMail,
-            password: pwd
+            eMail: eMail
         }
     })
 };
