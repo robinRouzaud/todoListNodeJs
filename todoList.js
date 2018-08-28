@@ -23,15 +23,15 @@ app.use(cookieSession({
 
 .use(bodyParser.json())
 
-.post('/load', function(req, res, next) {
-    handlers.loader(req, res);
-})
-
 .get('/', function(req, res) {
     if(req.session.userId === '' & req.session.username === '')
         handlers.loader(req, res);
     else
         handlers.loadTasks(req, res);
+})
+
+.post('/load', function(req, res, next) {
+    handlers.loader(req, res);
 })
 
 .post('/todolist/ajouterTache', function(req, res) {

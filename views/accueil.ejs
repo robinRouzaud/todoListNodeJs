@@ -12,12 +12,12 @@
                 <input type="submit" value="valider">
             </form>
         </div>
-        <% if(wrongPassword === true) { %>
+        <% if(wrongPassword === true & userFound === true) { %>
             <script>
                 alert('Le mot de passe entré est erroné.');
             </script>
         <% } %>
-        <% if(wrongPassword === false) { %>
+        <% if(wrongPassword === false & userFound === false) { %>
             <script>
                 alert('L\'utilisateur n\'a pas été trouvé.');
             </script>

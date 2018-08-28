@@ -13,10 +13,7 @@ module.exports.init = (req, res, next) => {
     if(req.session.username === 'undefined')
         req.session.username = '';
 
-    return res.render('accueil.ejs', {
-        wrongPassword: ''
-    });
-    //next();
+    next();
 };
 
 //Chargement de l'utilisateur dans sa session
@@ -42,7 +39,10 @@ module.exports.loader = (req, res) => {
             console.log('Chargement du contenu');
             return loadTaskLists(req, res);
         } else {
-            return [];
+            return res.render('accueil.ejs', {
+                wrongPassword: false,
+                userFound: userFound
+            });
         }
     })
 
@@ -50,11 +50,13 @@ module.exports.loader = (req, res) => {
         console.log(err);
         if(userFound)
             return res.render('accueil.ejs', {
-                wrongPassword: true
+                wrongPassword: true,
+                userFound: userFound
             });
         else
             return res.render('accueil.ejs', {
-                wrongPassword: false
+                wrongPassword: false,
+                userFound: userFound
             });
     });
 };
@@ -72,11 +74,7 @@ module.exports.ajouterTache = (req, res) => {
         })
     else {
         dao.TaskDAO.createTask(req.body.task.toString(), req.body.listeId.toString())
-        /*
-        .then(() => {
-            loadTaskLists(req, res);
-        })
-        */
+        
         .then(() => {
             res.redirect('/');
         });
