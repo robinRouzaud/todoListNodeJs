@@ -101,7 +101,8 @@ module.exports.deconnexion = (req, res) => {
     req.session.userId = '';
     req.session.username = '';
     res.render('accueil.ejs', {
-        wrongPassword: ''
+        wrongPassword: '',
+        userFound: ''
     })
 }
 
