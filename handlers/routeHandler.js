@@ -13,7 +13,9 @@ module.exports.init = (req, res, next) => {
     if(req.session.username === 'undefined')
         req.session.username = '';
 
-    return res.render('accueil.ejs');
+    return res.render('accueil.ejs', {
+        wrongPassword: false
+    });
     //next();
 };
 
