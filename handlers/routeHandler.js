@@ -13,7 +13,8 @@ module.exports.init = (req, res, next) => {
     if(req.session.username === 'undefined')
         req.session.username = '';
 
-    next();
+    return res.render('accueil.ejs');
+    //next();
 };
 
 //Chargement de l'utilisateur dans sa session
@@ -57,7 +58,7 @@ module.exports.loader = (req, res) => {
 };
 
 module.exports.loadTasks = (req, res) => {
-    return loadTaskLists(req, res)
+    return loadTaskLists(req, res);
 }
 
 //Permet l'ajout d'une tâche en base
