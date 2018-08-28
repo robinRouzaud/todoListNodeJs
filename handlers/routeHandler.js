@@ -14,7 +14,7 @@ module.exports.init = (req, res, next) => {
         req.session.username = '';
 
     return res.render('accueil.ejs', {
-        wrongPassword: false
+        wrongPassword: ''
     });
     //next();
 };
