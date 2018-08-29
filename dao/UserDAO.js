@@ -30,7 +30,9 @@ module.exports.createUser = (prenom, nom, eMail, password) => {
 
 module.exports.findUserByEmail = (eMail) => {
     return UserModel.findOne({
-        where: {eMail: eMail}
+        where: {
+            eMail: eMail
+        }
     })
 };
 

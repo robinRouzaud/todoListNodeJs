@@ -24,10 +24,13 @@ app.use(cookieSession({
 .use(bodyParser.json())
 
 .get('/', function(req, res) {
-    if(req.session.userId === '' & req.session.username === '')
-        handlers.loader(req, res);
-    else
+    if(req.session.userId != '')
         handlers.loadTasks(req, res);
+    else
+        res.render('accueil.ejs', {
+            wrongPassword: true,
+            userFound: false
+        });
 })
 
 .post('/load', function(req, res, next) {
