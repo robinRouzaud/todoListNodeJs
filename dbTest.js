@@ -45,6 +45,7 @@ dao.UserDAO.createUser('PrenomDAO10', 'nomDAO10','emailDAO10@test.com', 'passwor
     );
 */
 
+/*
 dao.TaskListDAO.findAllListsByUserId("b7471990-9271-11e8-9374-398f2067eada")
 .then((lists) => {
 
@@ -60,8 +61,9 @@ dao.TaskListDAO.findAllListsByUserId("b7471990-9271-11e8-9374-398f2067eada")
         console.log("Undefined? " + taches);
         taches.forEach(liste => {
             liste.unshift(
-                {taskListName: lists[i].dataValues.taskListName,
-                taskListId: lists[i].dataValues.taskListId
+                {
+                    taskListName: lists[i].dataValues.taskListName,
+                    taskListId: lists[i].dataValues.taskListId
                 });
             i++;
         })
@@ -75,10 +77,13 @@ getTasks = (list) => {
         resolve(dao.TaskDAO.findTasksByListId(list.dataValues.taskListId));
     });
 }
-
+*/
 /*
 dao.UserDAO.findUserByEmail("emailDAO101@test.com")
     .then(user => {
         console.log(user);
     });
 */
+
+
+dao.TaskListDAO.createTaskList('essai dbTest', 'ead50a80-ac7d-11e8-8ff9-a95ec1f48af4');

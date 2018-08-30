@@ -22,8 +22,8 @@ module.exports.builAndSaveUser = (prenom, nom, eMail, password) => {
 
 module.exports.createUser = (prenom, nom, eMail, password) => {
     return UserModel.create({
-        prenom: prenom,
         nom: nom,
+        prenom: prenom,
         eMail: eMail,
         password: password
     })

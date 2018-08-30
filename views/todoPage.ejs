@@ -10,15 +10,22 @@
             <a href="http://192.168.1.17:8080/deconnexion"><button>Déconnexion</button></a>
         </center>
 
+        <div name="createList">
+            <form method="POST" action="/createList">
+                <input type="text" name="taskListName">
+                <input type="submit" value="Valider">
+            </form>
+        </div>
+
         <%
-        taches.forEach(liste => {             
+        taches.forEach(liste => {
+            var listId = liste[0].taskListId;             
             %>
             <h2>Liste <%= liste[0].taskListName %>:</h2>
 
             <ul>
                 <% for(var i = 1, c = liste.length; i < c; i++) { %>
-                    <% var taskId = liste[i].taskId;
-                       var listId = liste[i].taskListId; %>
+                    <% var taskId = liste[i].taskId; %>
                     <li><a href="http://192.168.1.17:8080/todolist/supprimerTache?id=<%=taskId%>&listId=<%=listId%>"><img class="deleteIcon" src="/images/delete_grey_27x27.png"></a><%= liste[i].taskName %></li>
                 <%}%>
             </ul>

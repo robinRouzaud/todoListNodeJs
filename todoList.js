@@ -41,6 +41,10 @@ app.use(cookieSession({
     handlers.loader(req, res);
 })
 
+.post('/createList', (req, res) => {
+    handlers.createList(req, res);
+})
+
 .post('/todolist/ajouterTache', function(req, res) {
     handlers.ajouterTache(req, res);
 })

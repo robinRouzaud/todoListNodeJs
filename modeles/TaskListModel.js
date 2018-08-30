@@ -25,15 +25,15 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         userId: {
-            type: DataTypes.STRING,
-            field: 'user_id',
+            type: DataTypes.UUIDV1,
             references: 'utilisateur',
-            referencesKey: 'user_id',
-            get() {
+            referenceKey: 'user_id',
+            field: 'user_id',
+            get () {
                 return this.getDataValue('userId');
             },
             set(val) {
-                this.setDataValue('user_id', val);
+                this.setDataValue('userId', val);
             }
         }
     }, {
