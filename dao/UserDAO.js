@@ -25,7 +25,8 @@ module.exports.createUser = (prenom, nom, eMail, password) => {
         prenom: prenom,
         nom: nom,
         eMail: eMail,
-        password: password});
+        password: password
+    })
 };
 
 module.exports.findUserByEmail = (eMail) => {

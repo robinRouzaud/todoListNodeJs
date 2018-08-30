@@ -16,6 +16,66 @@ module.exports.init = (req, res, next) => {
     next();
 };
 
+//Enregistrement d'un utilisateur
+module.exports.registration = (req, res) => {
+
+    if(req.body.password1 === req.body.password2) {
+
+        checkIfUserExists(req.body.email)
+
+        .then(user => {
+
+            if(user === null) {
+
+                dao.UserDAO.createUser(
+                    req.body.prenom,
+                    req.body.nom,
+                    req.body.email,
+                    req.body.password1
+                )
+
+                .then((createdUser) => {
+
+                    console.log('Utilisateur créé!');
+                    req.session.userId = createdUser.userId;
+                    req.session.username = createdUser.username;
+
+                })
+                
+                .then(
+
+                    res.redirect('/')
+
+                );
+            }
+
+        })
+
+        .catch(userExists => {
+
+            res.render('accueil.ejs', {
+                wrongPassword: false,
+                userFound: true,
+                failedConfirmation: false,
+                userExists: userExists
+            });
+
+        });
+
+
+
+    }else{
+
+        res.render('accueil.ejs', {
+            wrongPassword: false,
+            userFound: true,
+            failedConfirmation: true,
+            userExists: false
+        });
+
+    }
+};
+
 //Chargement de l'utilisateur dans sa session
 module.exports.loader = (req, res) => {
     var userFound = false;
@@ -33,7 +93,6 @@ module.exports.loader = (req, res) => {
                 req.session.username = user.eMail.toString();
                 console.log('Chargement du contenu');
                 return loadTaskLists(req, res);
-                //return true;
             } else {
                 res.render('accueil.ejs', {
                     userFound: userFound,
@@ -70,12 +129,16 @@ module.exports.loadTasks = (req, res) => {
 //Permet l'ajout d'une tâche en base
 //puis redirection vers rechargement des taches
 module.exports.ajouterTache = (req, res) => {
-    if(req.session.username === '')
+    if(req.session.username === '') {
         res.render('accueil.ejs', {
             wrongPassword: ''
         })
-    else {
-        dao.TaskDAO.createTask(req.body.task.toString(), req.body.listeId.toString())
+    } else {
+
+        dao.TaskDAO.createTask(
+            req.body.task.toString(),
+            req.body.listeId.toString()
+        )
         
         .then(() => {
             res.redirect('/');
@@ -107,7 +170,7 @@ module.exports.deconnexion = (req, res) => {
         wrongPassword: '',
         userFound: ''
     })
-}
+};
 
 loadTaskLists = (req, res) => {
     //Charger les listes de l'utilisateur
@@ -150,11 +213,22 @@ loadTaskLists = (req, res) => {
             })
         }
     })
-}
+};
 
 getTasks = (list) => {
-    console.log('Recherche des tâches')
+
+    console.log('Recherche des tâches');
+
     return new Promise((resolve, reject) => {
+
         resolve(dao.TaskDAO.findTasksByListId(list.dataValues.taskListId));
+
     });
-}
+
+};
+
+checkIfUserExists = (eMail) => {
+
+    return dao.UserDAO.findUserByEmail(eMail);
+
+};

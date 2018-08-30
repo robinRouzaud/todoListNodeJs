@@ -8,8 +8,26 @@
         <div name="login">
             <form method="POST" action="/load">
                 <input type="text" name="username" value="emailDAO10@test.com">
-                <input type="text" name="password" value="password">
+                <input type="password" name="password" value="password">
                 <input type="submit" value="valider">
+            </form>
+        </div>
+        <br>
+        <div name="registrationForm">
+            S'enregistrer:<br>
+            <form method="POST" action="/registration">
+                Prénom:<br>
+                <input type="text" name="prenom" required><br>
+                Nom:<br>
+                <input type="text" name="name" required><br>
+                e-mail:<br>
+                <input type="email" name="email" required><br>
+                Mot de passe:<br>
+                <input type="password" name="password1" required><br>
+                Confirmez le mot de passe:<br>
+                <input type="password" name="password2" required><br>
+                <input type="submit" value ="Valider">
+                <input type="reset" value="Réinitialiser">
             </form>
         </div>
         <% if(wrongPassword === true && userFound === true) { %>

@@ -23,6 +23,10 @@ app.use(cookieSession({
 
 .use(bodyParser.json())
 
+.post('/registration', (req, res) => {
+    handlers.registration(req, res);
+})
+
 .get('/', function(req, res) {
     if(req.session.userId != '')
         handlers.loadTasks(req, res);

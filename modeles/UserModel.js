@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
                 return this.getDataValue('prenom');
             },
             set(val) {
-                this.setDataValue('prenom', val.toString());
+                this.setDataValue('prenom', val);
             }
         },
         nom: {
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
                 return this.getDataValue('nom');
             },
             set(val) {
-                this.setDataValue('nom', val.toString());
+                this.setDataValue('nom', val);
             }
         },
         eMail: {
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
                 return this.getDataValue('eMail');
             },
             set(val) {
-                this.setDataValue('eMail', val.toString());
+                this.setDataValue('eMail', val);
             }
         },
         password: {
