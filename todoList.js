@@ -8,8 +8,8 @@ var app = express();
 app.use(cookieSession({
         name: 'session',
         secret: 'todoSecret'
-    }
-))
+    })
+)
 
 .use(function(req, res, next) {
     handlers.init(req, res, next);
