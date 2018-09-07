@@ -22,8 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         taskListId: {
             type: DataTypes.UUIDV1,
-            referneces: 'liste',
-            referenceKey: 'liste_id',
+            references: { 
+                model: 'TaskListModel',
+                key: 'liste_id',
+            },
             field: 'liste_id',
             get () {
                 return this.getDataValue('taskListId');

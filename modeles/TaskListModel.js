@@ -26,8 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         userId: {
             type: DataTypes.UUIDV1,
-            references: 'utilisateur',
-            referenceKey: 'user_id',
+            references: {
+                model: 'UserModel',
+                key: 'user_id',
+            },
             field: 'user_id',
             get () {
                 return this.getDataValue('userId');

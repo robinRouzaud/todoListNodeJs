@@ -4,7 +4,7 @@ ListEnh branch
 */
 
 var Sequelize = require('sequelize');
-var config = require('../../config/default_lenh').database;
+var config = require('../../config/default_associations').database;
 
 var sequelize = new Sequelize(
     config.name,
@@ -13,10 +13,11 @@ var sequelize = new Sequelize(
     config.options
 );
 
-var models = ['UserModel',
-            'TaskListModel',
-            'TaskModel'
-        ];
+var models = [
+    'UserModel',
+    'TaskListModel',
+    'TaskModel'
+];
 
 models.forEach(function(model) {
     module.exports[model] = sequelize.import(__dirname + '/' + model);
@@ -26,8 +27,15 @@ models.forEach(function(model) {
     //Nécessaire d'ajouter les foreign keys à ce niveau
     //Sinon Sequelize ajoute une colonne dans les champs retournés
     //par le SELECT
-    m.UserModel.hasMany(m.TaskListModel, {through: 'user_tasklist'}); 
-    m.TaskListModel.hasMany(m.TaskModel, {foreignKey: 'tasklist_task'});
+    m.UserModel.hasMany(m.TaskListModel);
+    m.TaskListModel.belongsTo(m.UserModel);
+    m.TaskListModel.hasMany(m.TaskModel);
+    m.TaskModel.belongsTo(m.TaskListModel);
 })(module.exports);
+
+sequelize.sync({force: true})
+.then(() => {
+    console.log('Synchro terminée');
+});
 
 module.exports.sequelize = sequelize;

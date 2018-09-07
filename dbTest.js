@@ -86,4 +86,11 @@ dao.UserDAO.findUserByEmail("emailDAO101@test.com")
 */
 
 
-dao.TaskListDAO.createTaskList('essai dbTest', 'ead50a80-ac7d-11e8-8ff9-a95ec1f48af4');
+//dao.TaskListDAO.createTaskList('essai dbTest', 'ead50a80-ac7d-11e8-8ff9-a95ec1f48af4');
+
+dao.TaskDAO.createTask('Tache1');
+dao.TaskDAO.createTask('Tache2').then(task => {
+    console.log(task);
+});
+
+
