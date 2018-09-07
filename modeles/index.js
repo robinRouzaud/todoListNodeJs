@@ -26,8 +26,8 @@ models.forEach(function(model) {
     //Nécessaire d'ajouter les foreign keys à ce niveau
     //Sinon Sequelize ajoute une colonne dans les champs retournés
     //par le SELECT
-    m.UserModel.hasMany(m.TaskListModel, {foreignKey: 'userId'}); 
-    m.TaskListModel.hasMany(m.TaskModel, {foreignKey: 'taskListId'});
+    m.UserModel.hasMany(m.TaskListModel, {through: 'user_tasklist'}); 
+    m.TaskListModel.hasMany(m.TaskModel, {foreignKey: 'tasklist_task'});
 })(module.exports);
 
 module.exports.sequelize = sequelize;
