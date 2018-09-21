@@ -5,6 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   TodoList.associate = function(models) {
     // associations can be defined here
+    TodoList.hasMany(models.Task);
+    TodoList.belongsTo(models.User);
   };
   return TodoList;
 };
