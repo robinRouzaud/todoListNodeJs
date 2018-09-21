@@ -22,7 +22,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      todolistId: {
+      TodoListId: {
         type: Sequelize.INTEGER
       }
     });
