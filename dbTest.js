@@ -10,6 +10,11 @@ var User = require('./models').User;
 var TodoList = require('./models').TodoList;
 var Task = require('./models').Task;
 
+var userDao = require('./dao').UserDAO;
+
+console.log('Beginning tests with dbTest.js');
+
+
 /*
 var user1 = dao.UserDAO.createUser('prenomDAO9', 'nomDAO9', 'emailDAO9@test.com', 'passwordDAO9')
                 .then(function(user) {
@@ -99,7 +104,7 @@ dao.TaskDAO.createTask('Tache2').then(task => {
 });
 */
 
-
+/*
 User.create({
     firstName: "Alex",
     lastName: "Misovic",
@@ -141,3 +146,17 @@ User.create({
 }).then(
     console.log("Tout est enregistré!")
 );
+*/
+/*
+TodoList.findAll({
+    where: {
+        
+    }
+})
+*/
+
+userDao.getUserByEmailAndPassword("robin.rouzaud@gmail.com", "alex")
+.then(user => {
+    console.log(user);
+});
+
