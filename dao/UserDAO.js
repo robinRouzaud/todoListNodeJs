@@ -12,7 +12,7 @@ module.exports.createUser = (firstName, lastName, email, password) => {
 };
 
 //Read
-module.exports.getUserByEmailAndPassword = (email, password) => {
+module.exports.findUserByEmailAndPassword = (email, password) => {
     return User.findOne({
         where: {
             email: email,
@@ -20,14 +20,28 @@ module.exports.getUserByEmailAndPassword = (email, password) => {
         }
     });
 };
+
+module.exports.findUserById = (Id) => {
+    return User.findOne({
+        where: {
+            id: Id
+        }
+    });
+};
  
 //Update
-module.exports.updateUserFirstName = (User, firstName) => {
-    User.update({
+module.exports.updateUserFirstName = (UserInstance, firstName) => {
+    return UserInstance.update({
         firstName: firstName
     });
 };
 
 //Delete
-
+module.exports.deleteUserById = (Id) => {
+    this.findUserById(Id)
+    .then(user => {
+        user.destroy();
+    })
+    .then(console.log("Utilisateur supprimé"));
+};
 

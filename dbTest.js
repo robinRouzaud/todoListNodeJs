@@ -1,7 +1,7 @@
 /*
 Classe utilisée afin de tester l'ajout de données en base
 et la récupération des données associées à l'objets
-Illustration sur l'utilisation des Promises et de la nécessité d'utiliser ".then()"
+Illustration de l'utilisation des Promises et de la nécessité d'utiliser ".then()"
 */
 
 //var dao = require('./dao');
@@ -147,16 +147,49 @@ User.create({
     console.log("Tout est enregistré!")
 );
 */
-/*
-TodoList.findAll({
-    where: {
-        
-    }
-})
-*/
 
+TodoList.findAll({
+    //include permet de charger les associations
+    include: [Task]
+}).then(list => {
+    /*
+    list.forEach(element => {
+        console.log(element.dataValues.Tasks);
+    });
+    */
+    console.log(list instanceof Array);
+});
+
+/*
 userDao.getUserByEmailAndPassword("robin.rouzaud@gmail.com", "alex")
 .then(user => {
     console.log(user);
 });
+*/
 
+/*
+userDao.createUser('TestSupp', 'suppName', 'suppEmail', 'suppPass')
+.then(user => {
+    return userDao.updateUserFirstName(user, 'Toto');
+})
+.then(user => {
+    console.log(user);
+})
+*/
+
+/*
+userDao.findUserById(3)
+.then(user => {
+    console.log(user);
+})
+*/
+
+//Test suppression d'une instance de la base -- OK
+//userDao.deleteUserById(3);
+
+
+//Test update firstName
+userDao.findUserById(4)
+.then(user => {
+    userDao.updateUserFirstName(user, 'Jack');
+});
