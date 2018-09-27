@@ -10,7 +10,8 @@ var User = require('./models').User;
 var TodoList = require('./models').TodoList;
 var Task = require('./models').Task;
 
-var userDao = require('./dao').UserDAO;
+//var userDao = require('./dao').UserDAO;
+import {UserDAO as UserDao} from './dao';
 
 console.log('Beginning tests with dbTest.js');
 
@@ -189,7 +190,7 @@ userDao.findUserById(3)
 
 
 //Test update firstName
-userDao.findUserById(4)
+UserDao.findUserById(4)
 .then(user => {
     userDao.updateUserFirstName(user, 'Jack');
 });
