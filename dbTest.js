@@ -14,7 +14,7 @@ var Task = require('./models').Task;
 import {UserDAO as UserDao} from './dao';
 
 console.log('Beginning tests with dbTest.js');
-
+console.log(UserDao);
 
 /*
 var user1 = dao.UserDAO.createUser('prenomDAO9', 'nomDAO9', 'emailDAO9@test.com', 'passwordDAO9')
@@ -192,5 +192,9 @@ userDao.findUserById(3)
 //Test update firstName
 UserDao.findUserById(4)
 .then(user => {
-    userDao.updateUserFirstName(user, 'Jack');
+    console.log(user);
+    UserDao.updateUserFirstName(user, 'Hubert')
+    .then(upUser => {
+        console.log(upUser);
+    })
 });
