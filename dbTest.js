@@ -6,15 +6,18 @@ Illustration de l'utilisation des Promises et de la nécessité d'utiliser ".the
 
 //var dao = require('./dao');
 
-var User = require('./models').User;
-var TodoList = require('./models').TodoList;
-var Task = require('./models').Task;
+//var User = require('./models').User;
+
+//var TodoList = require('./models').TodoList;
+//var Task = require('./models').Task;
 
 //var userDao = require('./dao').UserDAO;
 import {UserDAO as UserDao} from './dao';
+import {TodoList as TodoList} from './models';
+import {Task as Task} from './models';
 
 console.log('Beginning tests with dbTest.js');
-console.log(UserDao);
+//console.log(UserDao);
 
 /*
 var user1 = dao.UserDAO.createUser('prenomDAO9', 'nomDAO9', 'emailDAO9@test.com', 'passwordDAO9')
@@ -158,7 +161,7 @@ TodoList.findAll({
         console.log(element.dataValues.Tasks);
     });
     */
-    console.log(list instanceof Array);
+    console.log("La liste est-elle instance d'Array? " + (list instanceof Array));
 });
 
 /*
@@ -190,11 +193,27 @@ userDao.findUserById(3)
 
 
 //Test update firstName
-UserDao.findUserById(4)
+/*UserDao.findUserById(4)
 .then(user => {
     console.log(user);
     UserDao.updateUserFirstName(user, 'Hubert')
     .then(upUser => {
         console.log(upUser);
+    });
+});*/
+
+
+
+UserDao.findUserById(1)
+.then(user => {
+    UserDao.updateUserEmail(user, "rouzaud.robin@orange.fr")
+    .then(user => {
+        console.log(user);
     })
 });
+
+UserDao.createUser('Tchou', 'Tchou', 'tchou@croquettes.fr', 'dodo')
+.then(user => {
+    console.log(user);
+})
+

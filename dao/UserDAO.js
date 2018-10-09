@@ -1,7 +1,10 @@
 //User DAO file
 
 
-const User = require('../models').User
+
+//const User = require('../models').User
+import {User as User} from '../models'
+import {TodoList as TodoList} from '../models'
 
 //Create
 export function createUser(firstName, lastName, email, password){
@@ -27,7 +30,8 @@ export function findUserById(Id){
     return User.findOne({
         where: {
             id: Id
-        }
+        },
+        include: [TodoList]
     });
 };
 
